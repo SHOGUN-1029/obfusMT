@@ -1,0 +1,88 @@
+services:
+  gateway:
+    build: ./gateway
+    ports:
+      - "8000:8000"
+    depends_on:
+      - remove_comments_n_space
+      - var_func_name_mangling
+      - string_literal
+      - func_pointer_alias
+      - preserve_method_call
+      - base64
+      - add_whitespace
+      - func_alias
+      - mangle_identifiers
+      - method_preserve
+      - string_decode
+      - base64_decode
+
+  remove_comments_n_space:
+    build: ./obfuscation_methods/remove_comments_n_space
+    ports:
+      - "5001:5001"
+
+  var_func_name_mangling:
+    build: ./obfuscation_methods/var_func_name_mangling
+    ports:
+      - "5002:5002"
+
+  string_literal:
+    build: ./obfuscation_methods/string_literal
+    ports:
+      - "5003:5003"
+
+  func_pointer_alias:
+    build: ./obfuscation_methods/func_pointer_alias
+    ports:
+      - "5004:5004"
+
+  preserve_method_call:
+    build: ./obfuscation_methods/preserve_method_call
+    ports:
+      - "5005:5005"
+
+  base64:
+    build: ./obfuscation_methods/base64
+    ports:
+      - "5006:5006"
+
+
+
+  add_whitespace:
+    build: ./deobfuscation_methods/add_whitespace
+    ports:
+      - "6001:6001"
+
+  func_alias:
+    build: ./deobfuscation_methods/func_alias
+    ports:
+      - "6004:6004"
+
+  mangle_identifiers:
+    build: ./deobfuscation_methods/mangle_identifiers
+    ports:
+      - "6002:6002"
+
+  method_preserve:
+    build: ./deobfuscation_methods/method_preserve
+    ports:
+      - "6005:6005"
+
+  string_decode:
+    build: ./deobfuscation_methods/string_decode
+    ports:
+      - "6003:6003"
+      
+  base64_decode:
+    build: ./deobfuscation_methods/base64_decode
+    ports:
+      - "6006:6006"
+
+  frontend:
+    image: nginx:alpine
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+
